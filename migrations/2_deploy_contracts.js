@@ -8,4 +8,6 @@ module.exports = async function (deployer) {
 
     await deployer.deploy(ConcreteLendingBorrowing, myToken.address);
     await deployer.deploy(Staking, myToken.address, 500); // 5% reward rate
+    deployer.deploy(MyToken, { gas: 8000000 });
+
 };

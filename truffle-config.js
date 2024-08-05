@@ -23,8 +23,8 @@ module.exports = {
       networkCheckTimeout: 1000000, // Increase network check timeout
       confirmations: 2,
       skipDryRun: true,
-      gas: 5000000,
-      gasPrice: 20000000000,
+      gas: 8000000,
+      gasPrice: 10000000000,
     },
   },
   compilers: {

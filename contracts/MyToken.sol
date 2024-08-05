@@ -3,11 +3,13 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract MyToken is ERC20, Ownable {
+contract MyToken is ERC20, Ownable, ReentrancyGuard {
     uint256 public constant INITIAL_SUPPLY = 1000000 * 10 ** 18;
     uint256 public constant TEAM_SUPPLY_PERCENTAGE = 20;
     uint256 public constant PUBLIC_SALE_SUPPLY_PERCENTAGE = 80;
+    uint256 public constant TOKENS_PER_ETH = 100; // Example rate: 1 ETH = 100 tokens
 
     event TokensBought(address indexed buyer, uint256 amount);
     event ETHWithdrawn(address indexed owner, uint256 amount);
@@ -21,9 +23,9 @@ contract MyToken is ERC20, Ownable {
         _mint(address(this), publicSaleSupply);
     }
 
-    function buyTokens() external payable {
+    function buyTokens() public payable nonReentrant {
         require(msg.value > 0, "ETH value must be greater than 0");
-        uint256 tokensToBuy = msg.value * 100; // Example rate: 1 ETH = 100 tokens
+        uint256 tokensToBuy = msg.value * TOKENS_PER_ETH;
         require(
             balanceOf(address(this)) >= tokensToBuy,
             "Not enough tokens available for sale"
@@ -35,7 +37,8 @@ contract MyToken is ERC20, Ownable {
     function withdrawETH() external onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No ETH to withdraw");
-        payable(owner()).transfer(balance);
+        (bool success, ) = payable(owner()).call{value: balance}("");
+        require(success, "ETH transfer failed");
         emit ETHWithdrawn(owner(), balance);
     }
 
@@ -46,9 +49,5 @@ contract MyToken is ERC20, Ownable {
         );
         _transfer(address(this), owner(), amount);
         emit TokensWithdrawn(owner(), amount);
-    }
-
-    receive() external payable {
-        this.buyTokens{value: msg.value}();
     }
 }
