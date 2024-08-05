@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+
+# Truffle build directory
+build/
+
+# Dotenv environment variables file
+.env
+
+# MacOS system files
+.DS_Store
+
+# Log files
+*.log

@@ -1,0 +1,24 @@
+{
+  "name": "defiprotocol",
+  "version": "1.0.0",
+  "description": "Here are the detailed steps to create the DeFi protocol as described:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "dotenv": "^16.4.5",
+    "truffle": "^5.8.2"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "mocha": "^10.1.0"
+  }
+}
